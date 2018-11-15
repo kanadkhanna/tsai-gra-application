@@ -51,16 +51,6 @@ def create_tf_example(example):
     encoded_image_data = image.tobytes() # Encoded image bytes
     image_format = b'jpeg' # b'jpeg' or b'png'
 
-    # Initialize features
-    xmins = [] # List of normalized left x coordinates in bounding box (1 per box)
-    xmaxs = [] # List of normalized right x coordinates in bounding box
-                # (1 per box)
-    ymins = [] # List of normalized top y coordinates in bounding box (1 per box)
-    ymaxs = [] # List of normalized bottom y coordinates in bounding box
-                # (1 per box)
-    classes_text = [] # List of string class name of bounding box (1 per box)
-    classes = [] # List of integer class id of bounding box (1 per box)
-
     # Populate using ground truth
     gt = example['gt']
     xmins = (gt['Left'] / float(width)).tolist()
