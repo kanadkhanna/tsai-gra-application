@@ -128,7 +128,7 @@ def main(_):
 
 if __name__ == '__main__':
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
-    output_path = os.path.abspath('./training_data.record')
+    output_path = os.path.abspath('./train.record')
 
     flags = tf.app.flags
     flags.DEFINE_string('output_path', output_path, '')
