@@ -51,7 +51,7 @@ def create_tf_example(example):
     encoded_image_data = image.tobytes() # Encoded image bytes
     image_format = b'jpeg' # b'jpeg' or b'png'
 
-    # Populate using ground truth
+    # Populate ground truth
     gt = example['gt']
     xmins = (gt['Left'] / float(width)).tolist()
     xmaxs = (gt['Right'] / float(width)).tolist()
@@ -96,7 +96,7 @@ def main(_):
         # Get filename/extension
         filename, file_extension = os.path.splitext(file)
         
-        if file_extension == '.ppm':
+        if file_extension == '.ppm' and int(filename) >= 20:
             # Open and save file as jpeg if not already done
             if not os.path.exists('images/train_jpg/{}.jpg'.format(filename)):
                 fp = '/'.join((rootdir, file))
@@ -128,7 +128,7 @@ def main(_):
 
 if __name__ == '__main__':
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
-    output_path = os.path.abspath('./train.record')
+    output_path = os.path.abspath('data/train.record')
 
     flags = tf.app.flags
     flags.DEFINE_string('output_path', output_path, '')
