@@ -9,6 +9,7 @@ Description:
 """
 
 import os
+import io
 import pandas as pd
 from PIL import Image
 import tensorflow as tf
@@ -48,7 +49,7 @@ def create_tf_example(example):
     image = example['image'] # PIL object
     filename = example['filename'].encode(encoding='utf-8') # Filename of the image
     width, height = image.size # Image height
-    encoded_image_data = image.tobytes() # Encoded image bytes
+    encoded_image_data = example['bytes'] # Encoded image bytes
     image_format = b'jpeg' # b'jpeg' or b'png'
 
     # Populate ground truth
@@ -105,10 +106,18 @@ def main(_):
                 print('Saved {}.jpg'.format(filename))
 
             # Read jpeg. Append filename, PIL object, and g.t. labels to list
-            im = Image.open('images/train_jpg/{}.jpg'.format(filename))
+            img_path = os.path.join('images/train_jpg', '{}.jpg'.format(filename))
+            with tf.gfile.GFile(img_path, 'rb') as fid:
+                encoded_jpg = fid.read()
+            encoded_jpg_io = io.BytesIO(encoded_jpg)
+            im = Image.open(encoded_jpg_io)
+            if im.format != 'JPEG':
+                raise ValueError('Image format not JPEG')
+
             examples.append({
                 'filename': filename + '.jpg',
                 'image': im,
+                'bytes': encoded_jpg,
                 'gt': gt.query('Filename == "{}"'.format(file))
             })
     print('Conversion complete.')
