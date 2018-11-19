@@ -6,15 +6,15 @@ This repository contains:
 1. Python files for generating TFRecord files from
      - These files should be placed in the following directory structure to execute:
         
-        + images
-           + test
+        + images/
+           + test/
               - 00000.ppm
               (etc...)
-           + train
+           + train/
               - 00000.ppm
               (etc...)
-           + test_jpg
-           + train_jpg
+           + test_jpg/
+           + train_jpg/
         - convert_test_to_jpg.py
         - create_train_records.py
         - create_val_records.py
